@@ -6,8 +6,8 @@ import plotly.express as px
 # Charger le modèle, l'encodeur et les données
 @st.cache_resource
 def load_resources():
-    model = joblib.load("model.pkl")
-    encoder = joblib.load("encoder.pkl")
+    model = joblib.load("models/model.pkl")
+    encoder = joblib.load("models/encoder.pkl")
     df = pd.read_csv("data/data_cleaned.csv")
     return model, encoder, df
 
@@ -24,14 +24,14 @@ def approx_coords_arrondissement(df, numero, rue):
 
     if numero in nums_dispos:
         match = df_rue[df_rue["adresse_numero"] == numero].iloc[0]
-        return match["latitude"], match["longitude"], int(match["code_postal"]) % 100
+        return match["latitude"], match["longitude"], match["arrondissement"]
     else:
         plus_proches = [n for n in nums_dispos if abs(n - numero) <= 10]
         if len(plus_proches) >= 1:
             df_voisins = df_rue[df_rue["adresse_numero"].isin(plus_proches)]
             lat = df_voisins["latitude"].mean()
             lon = df_voisins["longitude"].mean()
-            arr = int(df_voisins["code_postal"].mode().iloc[0]) % 100
+            arr = df_voisins["arrondissement"].mode().iloc[0]
             return lat, lon, arr
 
     return None, None, None
@@ -51,7 +51,15 @@ if st.button("Estimer le prix"):
     if latitude is None:
         st.error("Impossible de trouver cette adresse dans le dataset.")
     else:
-        rue_encoded = encoder.transform(pd.DataFrame([[rue]], columns=["adresse_nom_voie"]))
+        # Nettoyage de la rue pour correspondre au prétraitement
+        rue_clean = rue.lower().strip()
+
+        try:
+            # Encodage de la rue (peut échouer si catégorie inconnue et encoder mal entraîné)
+            rue_encoded = encoder.transform(pd.DataFrame([[rue_clean]], columns=["adresse_nom_voie"]))
+        except ValueError:
+            rue_encoded = [[0] * len(encoder.get_feature_names_out(['adresse_nom_voie']))]
+
         encoded_rue_df = pd.DataFrame(rue_encoded, columns=encoder.get_feature_names_out(['adresse_nom_voie']))
 
         input_df = pd.DataFrame({
@@ -65,12 +73,12 @@ if st.button("Estimer le prix"):
 
         input_final = pd.concat([input_df, encoded_rue_df], axis=1)
 
-        expected_features = model.feature_names_in_
-        for col in expected_features:
+        # Ajout des colonnes manquantes
+        for col in model.feature_names_in_:
             if col not in input_final.columns:
                 input_final[col] = 0
 
-        input_final = input_final[expected_features]
+        input_final = input_final[model.feature_names_in_]
 
         prix_m2 = model.predict(input_final)[0]
         prix_total = prix_m2 * surface
@@ -78,7 +86,7 @@ if st.button("Estimer le prix"):
         st.success(f"Prix estimé : {prix_total:,.0f} €")
         st.write(f"(soit environ {prix_m2:,.0f} €/m²)")
 
-        # Affichage de la carte
+        # Affichage carte
         df_point = pd.DataFrame({
             "latitude": [latitude],
             "longitude": [longitude],
