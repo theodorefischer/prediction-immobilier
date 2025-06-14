@@ -58,6 +58,8 @@ if st.button("Estimer le prix"):
             # Encodage de la rue (peut échouer si catégorie inconnue et encoder mal entraîné)
             rue_encoded = encoder.transform(pd.DataFrame([[rue_clean]], columns=["adresse_nom_voie"]))
         except ValueError:
+            st.warning("Nom de rue inconnu dans l'encodeur, encodage remplacé par des zéros.")
+            ####### A modifier mais en gros n'utilise pas la rue pour la predicition si il ne la trouve pas 
             rue_encoded = [[0] * len(encoder.get_feature_names_out(['adresse_nom_voie']))]
 
         encoded_rue_df = pd.DataFrame(rue_encoded, columns=encoder.get_feature_names_out(['adresse_nom_voie']))
