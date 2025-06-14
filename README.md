@@ -75,3 +75,6 @@ Le dataset provenant de data.gouv [data.gouv](https://explore.data.gouv.fr/fr/im
   ```bash 
   streamlit run demo-app.py
   ```
+
+  ![Demo APP](asset/app.png)
+  
