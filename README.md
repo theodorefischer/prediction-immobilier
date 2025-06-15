@@ -2,6 +2,7 @@
 
 Ce projet a pour objectif de développer un modèle de machine learning capable de prédire le prix de vente de biens immobiliers à Paris, à partir de caractéristiques comme la surface, l’arrondissement, la localisation GPS, le nombre de pièces, etc. Une application simple servira de démonstration
 
+
 ---
 
 ##  Objectifs
@@ -44,9 +45,17 @@ Le dataset provenant de [data.gouv](https://explore.data.gouv.fr/fr/immobilier?o
 
 - **`asset/`**  
   Contient les fichiers nécessaires pour utiliser certains outils. `arrondissement.geojson` permet d'avoir les coordonnées de chacun des arrondissements de Paris
+  Contient les fichiers bruts `dvf.csv` et nettoyés `data_cleaned.csv` au format CSV.
+
+- **`asset/`**  
+  Contient les fichiers nécessaires pour utiliser certains outils. `arrondissement.geojson` permet d'avoir les coordonnées de chacun des arrondissements de Paris
 
 - **`experiments/`**  
   Regroupe les expérimentations réalisées (modèles, encodage, fine-tuning) pour identifier le modèle le plus performant.
+  - `analyse-arrondissement.ipynb` premier modèle de prédiction en prédisant par la moyenne par arrondissements
+  - `encodage.ipynb` comparasion entre un encodage OneHot et l'encodage entier déjà disponible dans notre dataset
+  - `models_testing.ipynb` comparaison entre différents modèles
+  - `fine-tuning.ipynb` fine-tuning des meilleurs modèles séléctionnés
   - `analyse-arrondissement.ipynb` premier modèle de prédiction en prédisant par la moyenne par arrondissements
   - `encodage.ipynb` comparasion entre un encodage OneHot et l'encodage entier déjà disponible dans notre dataset
   - `models_testing.ipynb` comparaison entre différents modèles
