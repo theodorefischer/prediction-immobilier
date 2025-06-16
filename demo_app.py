@@ -39,7 +39,7 @@ def approx_coords_arrondissement(df, numero, rue):
 st.title("Estimation du prix d'un appartement à Paris")
 
 # Entrée utilisateur
-numero = st.number_input("Numéro dans la rue", min_value=1, max_value=300, value=27)
+numero = st.number_input("Numéro dans la rue", min_value=1, max_value=407, value=27)
 rue = st.text_input("Nom de la rue", value="rue de Rivoli")
 surface = st.number_input("Surface en m²", min_value=5.0, max_value=300.0, value=50.0)
 n_pieces = st.number_input("Nombre de pièces", min_value=1, max_value=10, value=2)
