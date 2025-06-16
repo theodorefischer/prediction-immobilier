@@ -10,6 +10,7 @@
 ## Partie 1 : Baseline et baseline par arrondissement :
 
 - Ajouter une prédiction baseline a analys-arrondissement pour comparer les modèles
+- Comparer avec les données rééels
 
 ## Partie 2 : Encodage :
 
@@ -32,3 +33,14 @@
 - améliorer le fine-tuning
 
 
+## En plus pour affiner le modèle
+
+- Voir si il est possible de forcer une évolution du prix avec la date parcque pour l'instant la date n'a aucune importance
+
+## Pour simplifier le projet 
+
+créér des fichier pythons dans outils plutot que des notebooks
+
+## cleaning.py
+
+À priori très peu d'erreur de frappe dans les noms des rues contrairement à ce qu'on pensait donc très peu de rue sont doublées (st à la place de saint manque de tirets, etc...)
