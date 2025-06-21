@@ -20,6 +20,8 @@
 ---
 
 - To test : Normalisation (notamment pour KNN ou les resultats ne sont pas pertinents du tout pour l'instant)
+- results : normalisation --> meilleur pour KNN pas pour DecisionTree
+
 - OneHot uniquement sur arrondissement test de la diff en perf (theoriquement moins bien) et en temps de clacul
 
 ---
@@ -31,6 +33,7 @@
 - Tester tout les modèles avec OneHot uniquement sur arr/ uniquement sur adresse/ et sur les deux
 - idem pour normaliser
 - améliorer le fine-tuning
+- entrainer un modèle linéaire avec la distance au centre
 
 
 ## En plus pour affiner le modèle
